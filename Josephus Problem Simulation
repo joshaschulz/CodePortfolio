@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace J_Problem_Extra_Credit
+{
+    class Program
+    {
+        static void printSoldiers(List<string> Soldiers)
+        {
+            //Remaining Soldiers
+            Console.WriteLine("\nSoldiers Remaining\n");
+            for (int i = 0; i < Soldiers.Count; i++)
+                Console.WriteLine(Soldiers[i]);
+        }
+
+        static void killSoldiers(List<string> Soldiers)
+        {
+            //Kill Loop
+            Console.WriteLine("\nKill Loop\n");
+            if (Soldiers.Count % 2 == 0)
+            {
+                for (int i = 1; i < Soldiers.Count; i++)
+                {
+                    Console.WriteLine(Soldiers[i] + " DEAD");
+                    Soldiers.Remove(Soldiers[i]);
+                }
+            }
+            else
+            {
+                for (int i = 1; i < Soldiers.Count; i++)
+                {
+                    Console.WriteLine(Soldiers[i] + " DEAD");
+                    Soldiers.Remove(Soldiers[i]);
+                }
+                Console.WriteLine(Soldiers[0] + " DEAD");
+                Soldiers.Remove(Soldiers[0]);
+            }
+        }
+        static int InputValidation() //positive integer values only
+        {
+            bool succeed = false;
+            int count = 0;
+            while (!succeed)
+            {
+                Console.WriteLine("How many Zealots are there including yourself, Josephus?");
+                string countString = Console.ReadLine();
+                
+                try
+                {
+                    count = Convert.ToInt32(countString);
+                    if (count > 0)
+                        succeed = true;
+                    else
+                    {
+                        Console.WriteLine("That is not a valid number of Zealots, Josephus...");
+                        continue;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("That is not a valid number of Zealots, Josephus...");
+                }
+            }
+            return count;
+        }
+        static void JosephusProblem()
+        {
+            List<string> Soldiers = new List<string>();
+            int count = InputValidation();
+
+            // Initialize Soldiers List
+            for (int i = 0; i < count; i++)
+            {
+                Soldiers.Add("Soldier #" + (i + 1));
+            }
+
+            //Suicide Pact
+            while (Soldiers.Count != 1)
+            {
+                printSoldiers(Soldiers);
+                killSoldiers(Soldiers);
+            }
+
+            //Print Final Soldier
+            printSoldiers(Soldiers);
+            Console.WriteLine("\nPick {0} in the circle, Josephus!", Soldiers[0]);
+        }
+
+        static void Main(string[] args)
+        {
+            JosephusProblem();
+        }
+    }
+}
