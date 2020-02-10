@@ -1,0 +1,138 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ants
+{
+    class Program
+    {
+        static double antSpeed = 0;
+        static double ropeExpansion = 0;
+
+        static float seconds = 0;
+        static float minutes = 0;
+        static float hours = 0;
+        static float days = 0;
+        static float weeks = 0;
+        static float years = 0;
+
+        static string appropriateTime = "0 Seconds";
+        static string appropriateRopeLength = "0 Centimeters";
+        static string appropriateAntPosition = "0 Centimeters";
+        static double antPosition = 0;
+        static double ropeLength = 0;
+        static double percComplete = 0;
+        static string appropriatePercComplete = "0 %";
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the Ant on a Rubber Rope - Paradox Simulator\n\nPress ENTER to Begin...");
+            Console.ReadLine();
+            Console.WriteLine("Please input the Initial Rope Length: ");
+            ropeLength = Convert.ToDouble(Console.ReadLine());
+            appropriateRopeLength = ropeLength.ToString() + " Centimeters";
+            Console.WriteLine("Please input the Ant's Speed: ");
+            antSpeed = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Please input the Rubber Rope's Expansion Rate: ");
+            ropeExpansion = Convert.ToDouble(Console.ReadLine());
+
+            while (percComplete < 1)
+            {
+
+                Console.WriteLine("~   ~   ~   ~   ~   ~   ~\nCurrent Statistics:\n\nElapsed - {0}\nAnt Position - {1}\nRope Length - {2}\nPercent Complete - {3}\n\nPress ENTER to Pass 1 Second...\nType 'RUN' to Run Simulation...\n", appropriateTime, appropriateAntPosition, appropriateRopeLength, appropriatePercComplete);
+
+                string userInput = Console.ReadLine();
+                if (userInput.ToLower() == "run")
+                {
+                    while (percComplete < 1)
+                    {
+                        Console.WriteLine("~   ~   ~   ~   ~   ~   ~\nCurrent Statistics:\n\nElapsed - {0}\nAnt Position - {1}\nRope Length - {2}\nPercent Complete - {3}\n\nPress ENTER to Pass 1 Second...\nType 'RUN' to Run Simulation...\n", appropriateTime, appropriateAntPosition, appropriateRopeLength, appropriatePercComplete);
+                        passSecond(ref seconds, ref minutes, ref hours, ref days, ref weeks, ref years, ref antPosition, ref antSpeed, ref percComplete, ref ropeExpansion, ref ropeLength, 2);
+                    }
+
+                }
+                else
+                    passSecond(ref seconds, ref minutes, ref hours, ref days, ref weeks, ref years, ref antPosition, ref antSpeed, ref percComplete, ref ropeExpansion, ref ropeLength, 2);
+            }
+
+
+        }
+        static void passSecond(ref float seconds, ref float minutes, ref float hours, ref float days, ref float weeks, ref float years, ref double antPosition, ref double antSpeed, ref double percComplete, ref double ropeExpansion, ref double ropeLength, int mult = 1)
+        {
+            seconds += 1 * mult;
+            antPosition = antPosition + (mult * (antSpeed + percComplete * ropeExpansion));
+            ropeLength = ropeLength + (mult * ropeExpansion);
+            percComplete = antPosition / ropeLength;
+            appropriatePercComplete = Math.Round(percComplete * 100, 3, MidpointRounding.AwayFromZero).ToString() + " %";
+
+            if (seconds >= 60)
+            {
+                minutes += 1;
+                seconds -= 60;
+            }
+            if (minutes >= 60)
+            {
+                hours += 1;
+                minutes -= 60;
+            }
+            if (hours >= 24)
+            {
+                days += 1;
+                hours -= 24;
+            }
+            if (days >= 7)
+            {
+                weeks += 1;
+                days -= 7;
+            }
+            if (weeks >= 52)
+            {
+                years += 1;
+                weeks -= 52;
+            }
+
+            if (years < 1)
+            {
+                if (weeks < 1)
+                {
+                    if (days < 1)
+                    {
+                        if (hours < 1)
+                        {
+                            if (minutes < 1)
+                                appropriateTime = seconds.ToString() + " Seconds";
+                            else
+                                appropriateTime = minutes.ToString() + " Minutes : " + seconds.ToString() + " Seconds";
+                        }
+                        else
+                            appropriateTime = hours.ToString() + " Hours : " + minutes.ToString() + " Minutes : " + seconds.ToString() + " Seconds";
+                    }
+                    else
+                        appropriateTime = days.ToString() + " D : " + hours.ToString() + " H : " + minutes.ToString() + " M : " + seconds.ToString() + " S";
+                }
+                else
+                    appropriateTime = weeks.ToString() + " W : " + days.ToString() + " D : " + hours.ToString() + " H : " + minutes.ToString() + " M : " + seconds.ToString() + " S";
+            }
+            else
+                appropriateTime = years.ToString() + " Y : " + weeks.ToString() + " W : " + days.ToString() + " D : " + hours.ToString() + " H : " + minutes.ToString() + " M : " + seconds.ToString() + " S";
+
+
+            if (antPosition < 100)
+                appropriateAntPosition = Math.Round(antPosition, 3, MidpointRounding.AwayFromZero).ToString() + " Centimeters";
+            else if (antPosition >= 100 && antPosition < 100000)
+                appropriateAntPosition = Math.Round(antPosition / 100, 3, MidpointRounding.AwayFromZero).ToString() + " Meters";
+            else if (antPosition >= 100000)
+                appropriateAntPosition = Math.Round(antPosition / 100 / 1000, 3, MidpointRounding.AwayFromZero).ToString() + " Kilometers";
+
+            if (ropeLength < 100)
+                appropriateRopeLength = Math.Round(ropeLength, 3, MidpointRounding.AwayFromZero).ToString() + " Centimeters";
+            else if (ropeLength >= 100 && ropeLength < 100000)
+                appropriateRopeLength = Math.Round(ropeLength / 100, 3, MidpointRounding.AwayFromZero).ToString() + " Meters";
+            else if (ropeLength >= 100000)
+                appropriateRopeLength = Math.Round(ropeLength / 100 / 1000, 3, MidpointRounding.AwayFromZero).ToString() + " Kilometers";
+
+        }
+    }
+}
